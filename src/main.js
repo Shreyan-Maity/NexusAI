@@ -192,10 +192,10 @@ function setupEventListeners() {
 function loadSettings() {
   opMode = localStorage.getItem('nexus_op_mode') || 'simulation';
   themeMode = localStorage.getItem('nexus_theme_mode') || 'device';
-  apiKeys.gemini = localStorage.getItem('nexus_key_gemini') || import.meta.env.VITE_GEMINI_API_KEY || '';
-  apiKeys.openai = localStorage.getItem('nexus_key_openai') || import.meta.env.VITE_OPENAI_API_KEY || '';
-  apiKeys.openrouter = localStorage.getItem('nexus_key_openrouter') || import.meta.env.VITE_OPENROUTER_API_KEY || '';
-  apiKeys.groq = localStorage.getItem('nexus_key_groq') || import.meta.env.VITE_GROQ_API_KEY || '';
+  apiKeys.gemini = localStorage.getItem('nexus_key_gemini') || '';
+  apiKeys.openai = localStorage.getItem('nexus_key_openai') || '';
+  apiKeys.openrouter = localStorage.getItem('nexus_key_openrouter') || '';
+  apiKeys.groq = localStorage.getItem('nexus_key_groq') || '';
 }
 
 // Save configurations to LocalStorage
