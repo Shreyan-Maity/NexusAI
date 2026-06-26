@@ -261,9 +261,12 @@ function applyThemeMode(mode) {
     btn.classList.toggle('active', btn.dataset.theme === mode);
   });
   
-  // Slide the track indicator: each button is 34px wide + 2px gap
-  if (themeSliderTrack) {
-    themeSliderTrack.style.transform = `translateX(${idx * 36}px)`;
+  // Slide the track indicator dynamically based on actual button size
+  if (themeSliderTrack && themeToggleContainer) {
+    const styles = getComputedStyle(themeToggleContainer);
+    const btnW = parseFloat(styles.getPropertyValue('--theme-btn-w'));
+    const gap = parseFloat(styles.getPropertyValue('--theme-gap'));
+    themeSliderTrack.style.transform = `translateX(${idx * (btnW + gap)}px)`;
   }
 }
 

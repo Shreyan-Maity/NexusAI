@@ -497,13 +497,17 @@ body {
 
 /* Theme Toggle Slider */
 .theme-toggle-container {
+  --theme-btn-w: 34px;
+  --theme-btn-h: 30px;
+  --theme-gap: 2px;
+  --theme-pad: 3px;
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: var(--theme-gap);
   background: var(--overlay-subtle);
   border: 1px solid var(--border-color);
   border-radius: 99px;
-  padding: 3px;
+  padding: var(--theme-pad);
   position: relative;
   transition: var(--transition-fast);
 }
@@ -513,8 +517,8 @@ body {
   z-index: 2;
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 30px;
+  width: var(--theme-btn-w);
+  height: var(--theme-btn-h);
   border-radius: 99px;
   background: transparent;
   border: none;
@@ -547,16 +551,16 @@ body {
 .theme-slider-track {
   position: absolute;
   z-index: 1;
-  width: 34px;
-  height: 30px;
+  width: var(--theme-btn-w);
+  height: var(--theme-btn-h);
   border-radius: 99px;
   background: var(--accent-color);
   box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.35);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
     background 0.3s ease,
     box-shadow 0.3s ease;
-  left: 3px;
-  top: 3px;
+  left: var(--theme-pad);
+  top: var(--theme-pad);
   transform: translateX(0);
 }
 
@@ -1427,13 +1431,10 @@ p code {
   }
 
   .theme-toggle-container {
-    padding: 2px;
-    gap: 1px;
-  }
-
-  .theme-btn {
-    width: 28px;
-    height: 26px;
+    --theme-btn-w: 28px;
+    --theme-btn-h: 26px;
+    --theme-gap: 1px;
+    --theme-pad: 2px;
   }
 
   .status-badge {
