@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus AI | Multi-Model Chat Assistant</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+    rel="stylesheet">
+
+  <!-- Animated SVG Favicon -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%236366f1'%3E%3Canimate attributeName='stop-color' values='%236366f1;%23ec4899;%2306b6d4;%237c3aed;%236366f1' dur='4s' repeatCount='indefinite'/%3E%3C/stop%3E%3Cstop offset='100%25' style='stop-color:%23ec4899'%3E%3Canimate attributeName='stop-color' values='%23ec4899;%237c3aed;%236366f1;%23f472b6;%23ec4899' dur='4s' repeatCount='indefinite'/%3E%3C/stop%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='32' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-family='system-ui,sans-serif' font-size='36' font-weight='800' fill='white' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E">
+
+  <link rel="stylesheet" href="src/style.css">
+</head>
+
+<body class="theme-groq"> <!-- Default theme is Groq (orange-red) -->
+
+  <!-- App Container -->
+  <div class="app-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-logo">N</div>
+          <span class="brand-name">Nexus AI</span>
+        </div>
+        <button class="close-sidebar-btn" id="closeSidebarBtn" aria-label="Close Sidebar">&times;</button>
+      </div>
+
+      <button class="new-chat-btn" id="newChatBtn">
+        <span class="btn-icon">+</span>
+        <span>New Chat</span>
+      </button>
+
+      <!-- Chat History list -->
+      <div class="chat-history-container">
+        <div class="history-label">Recent Chats</div>
+        <ul class="chat-history-list" id="chatHistoryList">
+          <!-- Populated dynamically by JS -->
+        </ul>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <button class="footer-action-btn" id="openSettingsBtn">
+          <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+          <span>API Settings</span>
+        </button>
+        <a href="#" class="back-portfolio-btn">
+          <!-- <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg> -->
+          <span>My Creator Portfolio  ↗</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="chat-main">
+
+      <!-- Top Header -->
+      <header class="chat-header">
+        <div class="header-left">
+          <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Open Sidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <!-- Model Selection Dropdown -->
+          <div class="model-select-wrapper">
+            <select class="model-select" id="modelSelect">
+              <option value="groq" selected>Nexus (Groq/API)</option>
+            </select>
+            <div class="model-select-arrow">▼</div>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Theme Toggle Slider -->
+          <div class="theme-toggle-container" id="themeToggleContainer">
+            <button class="theme-btn active" data-theme="device" title="System Default">
+              <svg class="icon-desktop" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+              <!-- <svg class="icon-mobile" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                <line x1="12" y1="18" x2="12.01" y2="18"/>
+              </svg> -->
+            </button>
+            <button class="theme-btn" data-theme="light" title="Light Theme">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+            </button>
+            <button class="theme-btn" data-theme="dark" title="Dark Theme">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            </button>
+            <div class="theme-slider-track" id="themeSliderTrack"></div>
+          </div>
+
+          <!-- Connection status indicator -->
+          <div class="status-badge mode-simulator" id="statusBadge">
+            <span class="status-dot"></span>
+            <span class="status-text" id="statusText">Simulator Mode</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Messages List -->
+      <div class="messages-viewport" id="messagesViewport">
+
+        <!-- Welcome Screen (Shown when active conversation is empty) -->
+        <div class="welcome-screen" id="welcomeScreen">
+          <div class="welcome-logo">N</div>
+          <h1 class="welcome-title">How can I help you today?</h1>
+          <p class="welcome-desc">Chat with Nexus AI powered by Groq's high-speed LPU. Connect your API key in Settings
+            for a live connection.</p>
+
+          <div class="prompt-grid">
+            <div class="prompt-card" data-prompt="Write a clean JavaScript function to debounce search inputs.">
+              <h3>Debounce search input</h3>
+              <p>"Write a clean JavaScript function to debounce..."</p>
+              <span class="prompt-go">→</span>
+            </div>
+            <div class="prompt-card"
+              data-prompt="Explain the difference between SQL and NoSQL databases in simple terms.">
+              <h3>SQL vs NoSQL</h3>
+              <p>"Explain the difference between SQL and NoSQL..."</p>
+              <span class="prompt-go">→</span>
+            </div>
+            <div class="prompt-card" data-prompt="Create a high-converting landing page structure for a SaaS product.">
+              <h3>SaaS Landing Page</h3>
+              <p>"Create a high-converting landing page..."</p>
+              <span class="prompt-go">→</span>
+            </div>
+            <div class="prompt-card"
+              data-prompt="Write a polite email asking a client for a project milestone extension.">
+              <h3>Extension Request</h3>
+              <p>"Write a polite email asking a client for a..."</p>
+              <span class="prompt-go">→</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conversation Feed (Populated dynamically) -->
+        <div class="conversation-feed" id="conversationFeed"></div>
+
+      </div>
+
+      <!-- Bottom Input Container -->
+      <footer class="input-container">
+        <div class="input-panel">
+          <form class="chat-form" id="chatForm">
+            <textarea class="chat-textarea" id="chatInput" placeholder="Ask Nexus AI..." rows="1" required ></textarea>
+            <button type="submit" class="send-btn" id="sendBtn" aria-label="Send message">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+            </button>
+          </form>
+          <div class="input-info">
+            <span id="charCounter">0 characters</span>
+            <span class="info-divider">•</span>
+            <span class="active-model-info" id="activeModelInfo">Powered by Nexus Simulation</span>
+          </div>
+        </div>
+      </footer>
+
+    </main>
+
+  </div>
+
+  <!-- Settings Modal Dialog -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">API Settings</h2>
+        <button class="modal-close-btn" id="closeSettingsBtn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-intro">Nexus AI operates in a high-fidelity **Simulation Mode** by default. To make live network
+          calls to the official models, paste your API keys below. They are saved **locally in your browser** and never
+          sent to our servers.</p>
+
+        <div class="setting-row">
+          <label class="setting-label">Operational Mode</label>
+          <div class="toggle-mode-wrapper">
+            <label class="mode-option">
+              <input type="radio" name="opMode" value="simulation" checked id="modeSimRadio">
+              <span class="mode-box">Simulated Mode</span>
+            </label>
+            <label class="mode-option">
+              <input type="radio" name="opMode" value="api" id="modeApiRadio">
+              <span class="mode-box">Real API Mode</span>
+            </label>
+          </div>
+        </div>
+
+
+
+        <div class="divider"></div>
+
+        <div class="keys-section" id="keysSection">
+          <div class="key-field">
+            <div class="field-info">
+              <label for="geminiKey" class="field-label">Google Gemini API Key</label>
+              <a href="https://aistudio.google.com/" target="_blank" class="field-link">Get Key ↗</a>
+            </div>
+            <div class="input-password-wrapper">
+              <input type="password" id="geminiKey" placeholder="AIzaSy..." class="key-input">
+              <button class="toggle-key-visibility" type="button" aria-label="Toggle Visibility">👁️</button>
+            </div>
+          </div>
+
+          <div class="key-field">
+            <div class="field-info">
+              <label for="openaiKey" class="field-label">OpenAI API Key (ChatGPT)</label>
+              <a href="https://platform.openai.com/api-keys" target="_blank" class="field-link">Get Key ↗</a>
+            </div>
+            <div class="input-password-wrapper">
+              <input type="password" id="openaiKey" placeholder="sk-proj-..." class="key-input">
+              <button class="toggle-key-visibility" type="button" aria-label="Toggle Visibility">👁️</button>
+            </div>
+          </div>
+
+          <div class="key-field">
+            <div class="field-info">
+              <label for="openrouterKey" class="field-label">OpenRouter API Key (Recommended for Claude & CORS
+                Bypass)</label>
+              <a href="https://openrouter.ai/keys" target="_blank" class="field-link">Get Key ↗</a>
+            </div>
+            <div class="input-password-wrapper">
+              <input type="password" id="openrouterKey" placeholder="sk-or-v1-..." class="key-input">
+              <button class="toggle-key-visibility" type="button" aria-label="Toggle Visibility">👁️</button>
+            </div>
+            <p class="field-desc">Claude direct API blocks client-side browser requests due to CORS policies. Using an
+              OpenRouter API key allows full, safe client-side access to all models (Claude 3.5 Haiku, Gemini, and
+              GPT-4o-mini).</p>
+          </div>
+
+          <div class="key-field">
+            <div class="field-info">
+              <!-- <label for="groqKey" class="field-label">Groq API Key</label>
+              <a href="https://console.groq.com/keys" target="_blank" class="field-link">Get Key ↗</a>
+            </div> -->
+            <div class="input-password-wrapper_Groq">
+              <input type="password" id="groqKey" placeholder="gsk_..." class="key-input">
+              <!-- <button class="toggle-key-visibility" type="button" aria-label="Toggle Visibility">👁️</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="modal-btn btn-cancel" id="cancelSettingsBtn">Close</button>
+        <button class="modal-btn btn-save" id="saveSettingsBtn">Save Configuration</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="src/main.js" type="module"></script>
+</body>
+
+</html>
